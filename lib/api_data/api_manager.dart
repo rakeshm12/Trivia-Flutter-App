@@ -7,7 +7,7 @@ class ApiManager {
   Future<QuizModel> getQuestion() async {
     var client = http.Client();
 
-    var questions;
+    QuizModel questions = QuizModel(results: []);
 
     try {
       var response =
@@ -17,9 +17,7 @@ class ApiManager {
         var result = json.decode(jsonData);
 
         questions = QuizModel.fromJson(result);
-        print(questions);
       }
-
     } catch (e) {
       throw Exception(e);
     } finally {

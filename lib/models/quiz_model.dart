@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 QuizModel dbModelFromJson(String str) => QuizModel.fromJson(json.decode(str));
@@ -8,27 +6,28 @@ String dbModelToJson(QuizModel data) => json.encode(data.toJson());
 
 class QuizModel {
   QuizModel({
-    required this.responseCode,
+    this.responseCode,
     required this.results,
   });
 
-  final int responseCode;
+  final int? responseCode;
   final List<Result> results;
 
   factory QuizModel.fromJson(Map<String, dynamic> json) => QuizModel(
-    responseCode: json["response_code"],
-    results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-  );
+        responseCode: json["response_code"],
+        results:
+            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "response_code": responseCode,
-    "results": List<dynamic>.from(results.map((x) => x.toJson())),
-  };
+        "response_code": responseCode,
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+      };
 }
 
 class Result {
   Result({
-    required this.category,
+    this.category,
     this.type,
     this.difficulty,
     required this.question,
@@ -36,7 +35,7 @@ class Result {
     required this.incorrectAnswers,
   });
 
-  final String category;
+  final String? category;
   final Type? type;
   final Difficulty? difficulty;
   final String question;
@@ -44,22 +43,23 @@ class Result {
   final List<String> incorrectAnswers;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-    category: json["category"],
-    type: typeValues.map[json["type"]],
-    difficulty: difficultyValues.map[json["difficulty"]],
-    question: json["question"],
-    correctAnswer: json["correct_answer"],
-    incorrectAnswers: List<String>.from(json["incorrect_answers"].map((x) => x)),
-  );
+        category: json["category"],
+        type: typeValues.map[json["type"]],
+        difficulty: difficultyValues.map[json["difficulty"]],
+        question: json["question"],
+        correctAnswer: json["correct_answer"],
+        incorrectAnswers:
+            List<String>.from(json["incorrect_answers"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "category": category,
-    "type": typeValues.reverse[type],
-    "difficulty": difficultyValues.reverse[difficulty],
-    "question": question,
-    "correct_answer": correctAnswer,
-    "incorrect_answers": List<dynamic>.from(incorrectAnswers.map((x) => x)),
-  };
+        "category": category,
+        "type": typeValues.reverse[type],
+        "difficulty": difficultyValues.reverse[difficulty],
+        "question": question,
+        "correct_answer": correctAnswer,
+        "incorrect_answers": List<dynamic>.from(incorrectAnswers.map((x) => x)),
+      };
 }
 
 enum Difficulty { HARD, MEDIUM, EASY }
@@ -72,14 +72,12 @@ final difficultyValues = EnumValues({
 
 enum Type { MULTIPLE, BOOLEAN }
 
-final typeValues = EnumValues({
-  "boolean": Type.BOOLEAN,
-  "multiple": Type.MULTIPLE
-});
+final typeValues =
+    EnumValues({"boolean": Type.BOOLEAN, "multiple": Type.MULTIPLE});
 
 class EnumValues<T> {
   Map<String, T> map;
- late Map<T, String> reverseMap;
+  late Map<T, String> reverseMap;
 
   EnumValues(this.map);
 

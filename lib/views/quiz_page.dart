@@ -12,9 +12,10 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  late Future<QuizModel> results;
   int currentIndex = 0;
   final Map<int, dynamic> answers = {};
+  late Future<QuizModel> results;
+  List<String> score = [];
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _QuizPageState extends State<QuizPage> {
                   return ListView.builder(
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        final result = snapshot.data!.results[index];
+                        final result = snapshot.data!.results[currentIndex];
                         if (!result.incorrectAnswers
                             .contains(result.correctAnswer)) {
                           result.incorrectAnswers.add(result.correctAnswer);
@@ -91,31 +92,55 @@ class _QuizPageState extends State<QuizPage> {
                                 children: [
                                   CustomButton(
                                     onTap: () {
-                                      if (result
-                                          .question[currentIndex].isEmpty) {
-                                        return;
-                                      } else if (currentIndex <
-                                          result.question.length - 1) {
-                                        setState(() {
-                                          currentIndex++;
-                                        });
-                                      } else {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ResultPage()),
-                                        );
+                                      try {
+                                        if (result.correctAnswer ==
+                                            answers[currentIndex]) {
+                                          score.addAll([result.correctAnswer]);
+                                          // print(score);
+                                        }
+
+                                        if (answers[currentIndex] == null ||
+                                            answers[currentIndex].isEmpty) {
+                                          return;
+                                        } else if (currentIndex <
+                                            snapshot.data!.results.length - 1) {
+                                          setState(() {
+                                            currentIndex++;
+                                          });
+                                        } else {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ResultPage(
+                                                          score: score)));
+                                        }
+                                      } on Exception catch (e) {
+                                        throw Exception(e);
                                       }
                                     },
-                                    text: 'Next',
+                                    text: currentIndex ==
+                                                snapshot.data!.results.length -
+                                                    1 &&
+                                            answers[currentIndex] != null
+                                        ? 'Submit'
+                                        : 'Next',
                                     textColor: Colors.blue.shade800,
                                     width: 100,
                                     buttonColor: Colors.yellow.shade700,
-                                    icon: Icons.arrow_forward,
+                                    icon: currentIndex ==
+                                                snapshot.data!.results.length -
+                                                    1 &&
+                                            answers[currentIndex] != null
+                                        ? null
+                                        : Icons.arrow_forward,
                                     iconColor: Colors.blue.shade800,
-                                    textPadding:
-                                        const EdgeInsets.only(left: 20),
+                                    textPadding: currentIndex ==
+                                                snapshot.data!.results.length -
+                                                    1 &&
+                                            answers[currentIndex] != null
+                                        ? const EdgeInsets.only(left: 2.0)
+                                        : const EdgeInsets.only(left: 20),
                                   ),
                                 ],
                               ),

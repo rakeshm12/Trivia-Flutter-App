@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton(
-      {Key? key,
-      required this.onTap,
-      required this.text,
-      this.buttonColor,
-      this.textColor,
-      required this.width,
-      this.icon,
-      this.iconColor,
-      required this.textPadding})
-      : super(key: key);
+  const CustomButton({
+    Key? key,
+    required this.onTap,
+    required this.text,
+    this.buttonColor,
+    this.textColor,
+    required this.width,
+    this.icon,
+    this.iconColor,
+    this.textPadding,
+  }) : super(key: key);
 
   final Function() onTap;
   final String text;
@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   final double width;
   final IconData? icon;
   final Color? iconColor;
-  final EdgeInsetsGeometry textPadding;
+  final EdgeInsetsGeometry? textPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class CustomButton extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
             ),
             Padding(
-              padding: textPadding,
+              padding: textPadding!,
               child: Icon(
                 icon,
                 color: iconColor,
