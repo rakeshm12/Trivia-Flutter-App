@@ -101,7 +101,12 @@ class _QuizPageState extends State<QuizPage> {
 
                                         if (answers[currentIndex] == null ||
                                             answers[currentIndex].isEmpty) {
-                                          return;
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                content: Text('Choose your answer to continue'),
+                                              duration: Duration(milliseconds: 500),
+                                            ),
+                                          );
                                         } else if (currentIndex <
                                             snapshot.data!.results.length - 1) {
                                           setState(() {
